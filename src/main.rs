@@ -25,7 +25,7 @@ fn main() {
     //         println!("{:?}", cell.calc_position(20, 0));
     //     }
     // }
-    let mut c = Canvas::new(600, 600, "Wavefunction Collapse", &font);
+    let mut c = Canvas::new(400, 400, "Wavefunction Collapse", &font);
     c.setup();
     c.draw();
 }

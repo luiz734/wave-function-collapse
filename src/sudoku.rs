@@ -6,13 +6,13 @@ use sfml::system::Vector2f;
 use sfml::window::{Event, Style, VideoMode};
 use sfml::SfBox;
 
-use crate::ui::UIText;
+use crate::ui::{UIText, UIButton, Displayable};
 
 #[derive(Debug)]
 pub struct Cell {
 	row: usize,
 	col: usize,
-	values: Vec<usize>,
+	values: Vec<i32>,
 }
 
 impl Cell {
@@ -39,6 +39,8 @@ pub struct Canvas<'a> {
 	pub window: RenderWindow,
 	font: &'a SfBox<Font>,
 	text: UIText<'a>,
+	button: UIButton<'a>,
+
 }
 impl<'a> Canvas<'a> {
 	pub fn new(width: u32, height: u32, title: &str, font: &'a SfBox<Font>) -> Canvas<'a> {
@@ -51,6 +53,9 @@ impl<'a> Canvas<'a> {
 			),
 			font,
 			text: UIText::new("hello world!", font),
+			button: UIButton::new("click", font, (100.,100.), (10., 50.), move || {
+				println!("Clicked");
+			}),
 		}
 	}
 	pub fn setup(&mut self) {
@@ -70,6 +75,8 @@ impl<'a> Canvas<'a> {
 			// try draw vertices (connections)
 			// draw points and vertices
 			self.text.display(&mut self.window);
+			self.button.display(&mut self.window);
+			self.button.click();
 
 			self.window.display();
 		}
