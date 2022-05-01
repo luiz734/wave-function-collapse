@@ -1,9 +1,10 @@
 mod sudoku;
-use sudoku::{Canvas, Cell};
+mod ui;
+
 use sfml::graphics::Font;
+use sudoku::{Canvas, Cell};
 
 fn main() {
-    
     let font = Font::from_file("SpaceMono-Regular.ttf").unwrap();
 
     const ROWS: usize = 9;

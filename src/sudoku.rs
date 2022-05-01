@@ -1,10 +1,12 @@
 use sfml::graphics::{
-	CircleShape, Color, Font, PrimitiveType, RenderStates, RenderTarget, RenderWindow, Shape, Text,
+	CircleShape, Color, Font, PrimitiveType, RenderStates, RenderTarget, RenderWindow, Shape,
 	Transformable, Vertex,
 };
 use sfml::system::Vector2f;
 use sfml::window::{Event, Style, VideoMode};
 use sfml::SfBox;
+
+use crate::ui::UIText;
 
 #[derive(Debug)]
 pub struct Cell {
@@ -36,7 +38,7 @@ impl Cell {
 pub struct Canvas<'a> {
 	pub window: RenderWindow,
 	font: &'a SfBox<Font>,
-	text: Vec<Text<'a>>,
+	text: UIText<'a>,
 }
 impl<'a> Canvas<'a> {
 	pub fn new(width: u32, height: u32, title: &str, font: &'a SfBox<Font>) -> Canvas<'a> {
@@ -48,12 +50,11 @@ impl<'a> Canvas<'a> {
 				&Default::default(),
 			),
 			font,
-			text: Vec::new(),
+			text: UIText::new("hello world!", font),
 		}
 	}
 	pub fn setup(&mut self) {
 		self.window.set_framerate_limit(60);
-		self.add_diplay_text("teste", 40., 40.);
 	}
 	pub fn draw(&mut self) {
 		while self.window.is_open() {
@@ -67,22 +68,10 @@ impl<'a> Canvas<'a> {
 
 			self.window.clear(Color::BLACK);
 			// try draw vertices (connections)
-			for t in self.text.iter() {
-				println!("{:?}", t);
-				self.window.draw(t);
-			}
 			// draw points and vertices
+			self.text.display(&mut self.window);
 
 			self.window.display();
 		}
-	}
-	pub fn add_diplay_text(&mut self, text: &str, coord_x: f32, coord_y: f32) {
-		// TODO: check if fonts exists
-
-		// TODO: set font size as constant
-		let mut text = Text::new(text, &self.font, 12);
-		text.set_position(Vector2f::new(coord_x, coord_y));
-		text.set_fill_color(Color::RED);
-		self.text.push(text);
 	}
 }
